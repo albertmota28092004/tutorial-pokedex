@@ -1,7 +1,10 @@
-const pokemonContainer = document.querySelector(".pokemon-container");
-const spinner = document.querySelector("#spinner");
-const previous = document.querySelector("#previous");
-const next = document.querySelector("#next");
+var productContainer = document.querySelector(".product-container");
+var spinner = document.querySelector("#spinner");
+var previous = document.querySelector("#previous");
+var next = document.querySelector("#next");
+var offcanvas = new bootstrap.Offcanvas(document.getElementById("demo"));
+var productInOffcanvas = document.querySelector(".offcanvas-body .productCar");
+var productsInCart = []; 
 
 let limit = 8;
 let offset = 1;
@@ -9,114 +12,161 @@ let offset = 1;
 previous.addEventListener("click", () => {
   if (offset != 1) {
     offset -= 9;
-    removeChildNodes(pokemonContainer);
-    fetchPokemons(offset, limit);
+    removeChildNodes(productContainer);
+    fetchProducts(offset, limit);
   }
 });
 
 next.addEventListener("click", () => {
-  offset += 9;
-  removeChildNodes(pokemonContainer);
-  fetchPokemons(offset, limit);
+  offset += limit; // Incrementa el valor de offset
+
+  if (offset <= 20) { // Limita el valor de offset para evitar solicitudes innecesarias
+    removeChildNodes(productContainer);
+    fetchProducts(offset, limit);
+  } else {
+    // Aquí puedes manejar el caso en que no hay más páginas disponibles.
+    // Por ejemplo, puedes deshabilitar el botón "next" o mostrar un mensaje al usuario.
+  }
 });
 
-function fetchPokemon(id) {
-  fetch(`https://pokeapi.co/api/v2/pokemon/${id}/`)
+
+function fetchProduct(id) {
+  fetch(`https://fakestoreapi.com/products/${id}`)
     .then((res) => res.json())
     .then((data) => {
-      createPokemon(data);
+      createProduct(data);
       spinner.style.display = "none";
     });
 }
 
-function fetchPokemons(offset, limit) {
+function fetchProducts(offset, limit) {
   spinner.style.display = "block";
   for (let i = offset; i <= offset + limit; i++) {
-    fetchPokemon(i);
+    fetchProduct(i);
   }
 }
 
-function createPokemon(pokemon) {
-  const flipCard = document.createElement("div");
+function createProduct(product) {
+  let flipCard = document.createElement("div");
   flipCard.classList.add("flip-card");
 
-  const cardContainer = document.createElement("div");
+  let cardContainer = document.createElement("div");
   cardContainer.classList.add("card-container");
 
   flipCard.appendChild(cardContainer);
 
-  const card = document.createElement("div");
-  card.classList.add("pokemon-block");
+  let card = document.createElement("div");
+  card.classList.add("product-block");
 
-  const spriteContainer = document.createElement("div");
-  spriteContainer.classList.add("img-container");
+  let imageContainer = document.createElement("div");
+  imageContainer.classList.add("img-container");
 
-  const sprite = document.createElement("img");
-  sprite.src = pokemon.sprites.front_default;
+  let image = document.createElement("img");
+  image.src = product.image;
+  image.style.width = "100%";
+  image.style.height = "500px";
 
-  spriteContainer.appendChild(sprite);
+  imageContainer.appendChild(image);
 
-  const number = document.createElement("p");
-  number.textContent = `#${pokemon.id.toString().padStart(3, 0)}`;
+  let title = document.createElement("p");
+  title.textContent = product.title;
+  title.style.fontWeight = "bold";
 
-  const name = document.createElement("p");
-  name.classList.add("name");
-  name.textContent = pokemon.name;
+  let price = document.createElement("p");
+  price.textContent = `$ ${product.price}`;
 
-  card.appendChild(spriteContainer);
-  card.appendChild(number);
-  card.appendChild(name);
+  card.appendChild(imageContainer);
+  card.appendChild(title);
+  card.appendChild(price);
 
-  const cardBack = document.createElement("div");
-  cardBack.classList.add("pokemon-block-back");
+  let cardBack = document.createElement("div");
+  cardBack.classList.add("product-block-back");
 
-  cardBack.appendChild(progressBars(pokemon.stats));
+  let category = document.createElement("p");
+  category.textContent = formatCamelCase(product.category);
+  category.style.fontWeight = "bold";
+
+  let description = document.createElement("p");
+  description.textContent = `${product.description}`;
+
+  let buttonPurchase = document.createElement("button");
+  buttonPurchase.classList.add("button-purchase");
+  buttonPurchase.textContent = 'Buy';
+  buttonPurchase.style.fontWeight = "bold";
+
+  buttonPurchase.addEventListener("click", () => {
+    addProductToCart(product);
+  });
+
+  cardBack.appendChild(category);
+  cardBack.appendChild(description);
+  cardBack.appendChild(buttonPurchase);
 
   cardContainer.appendChild(card);
   cardContainer.appendChild(cardBack);
-  pokemonContainer.appendChild(flipCard);
+  productContainer.appendChild(flipCard);
+  
 }
 
-function progressBars(stats) {
-  const statsContainer = document.createElement("div");
-  statsContainer.classList.add("stats-container");
+function formatCamelCase(text) {
+  return text
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}
 
-  for (let i = 0; i < 3; i++) {
-    const stat = stats[i];
+fetchProducts(offset, limit);
 
-    const statPercent = stat.base_stat / 2 + "%";
-    const statContainer = document.createElement("stat-container");
-    statContainer.classList.add("stat-container");
+function addProductToCart(product) {
+  let productInCart = document.createElement("div");
+  productInCart.classList.add("product-in-cart");
 
-    const statName = document.createElement("p");
-    statName.textContent = stat.stat.name;
+  let image = document.createElement("img");
+  image.src = product.image;
+  image.style.width = "100px";
+  image.style.height = "100px";
 
-    const progress = document.createElement("div");
-    progress.classList.add("progress");
+  let title = document.createElement("p");
+  title.textContent = product.title;
+  title.style.fontWeight = "bold";
 
-    const progressBar = document.createElement("div");
-    progressBar.classList.add("progress-bar");
-    progressBar.setAttribute("aria-valuenow", stat.base_stat);
-    progressBar.setAttribute("aria-valuemin", 0);
-    progressBar.setAttribute("aria-valuemax", 200);
-    progressBar.style.width = statPercent;
+  let price = document.createElement("p");
+  price.textContent = `$ ${product.price}`;
 
-    progressBar.textContent = stat.base_stat;
+  let productsInfo = document.createElement("div");
+  productsInfo.appendChild(title);
+  productsInfo.appendChild(price);
 
-    progress.appendChild(progressBar);
-    statContainer.appendChild(statName);
-    statContainer.appendChild(progress);
+  let removeButton = document.createElement("button");
+  removeButton.classList.add("remove-button");
+  removeButton.textContent = 'X';
+  removeButton.addEventListener("click", () => {
+    removeProductFromCart(productInCart);
+  });
 
-    statsContainer.appendChild(statContainer);
+  productInCart.appendChild(image);
+  productInCart.appendChild(productsInfo);
+  productInCart.appendChild(removeButton);
+  productInOffcanvas.appendChild(productInCart);
+  offcanvas.show();
+
+  productsInCart.push(product);
+  updateBuyNowButton();
+}
+
+function updateBuyNowButton() {
+  let buyNowButton = document.getElementById("buy-now-button");
+
+  if (productsInCart.length > 0) {
+    buyNowButton.style.display = "block";
+  } else  {
+    buyNowButton.style.display = "none"; 
   }
-
-  return statsContainer;
 }
 
-function removeChildNodes(parent) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
+function removeProductFromCart(productInCart) {
+  productInOffcanvas.removeChild(productInCart);
 }
 
-fetchPokemons(offset, limit);
+
+updateBuyNowButton();
