@@ -22,25 +22,25 @@
     </a>
     <div>
         <h1>Sign in</h1>
-        <form action="/action_page.php" id="login">
+        <form id="login">
             <div class="mb-3 mt-3">
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" class="form-control" placeholder="Enter email" name="email">
+                <label for="username" class="form-label">Username:</label>
+                <input type="text" class="form-control" placeholder="Enter username" name="username_login" id="username_login">
             </div>
             <div class="mb-3">
                 <label for="pwd" class="form-label">Password:</label>
-                <input type="password" class="form-control" placeholder="Enter password" name="pswd">
+                <input type="password" class="form-control" placeholder="Enter password" name="password_login" id="password_login">
             </div>
             <div class="form-check mb-3">
                 <label class="form-check-label">
                     <input class="form-check-input" type="checkbox" name="remember"> Remember me
                 </label>
             </div>
-            <button type="submit" class="btn iniciarsesion">Submit</button>
+            <button type="submit" class="btn button_submit" onclick="validateUser()">Submit</button>
             <a class="extern_link" href="register.html">Haven't you registered yet? Sign up</a>
         </form>
     </div>
-    <script src="users.js"></script>
+    <script src="script.js"></script>
 </body>
 
 </html>

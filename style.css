@@ -1,16 +1,15 @@
 body {
-  background: linear-gradient(
-    90deg,
-    #D17C1F 0%,
-    #ffb842 54%,
-    #E6B14C 82%
-  );
+  background: linear-gradient(90deg,
+      #D17C1F 0%,
+      #ffb842 54%,
+      #E6B14C 82%);
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
   font-family: "Oswald", sans-serif;
 }
 
-#login, #register {
+#login,
+#register {
   margin: 50px 500px;
   border-radius: 50px;
   padding: 30px;
@@ -19,28 +18,24 @@ body {
 }
 
 #register_button {
-  background: linear-gradient(
-    90deg,
-    #D17C1F 0%,
-    #ffb842 54%,
-    #E6B14C 82%
-  ) !important;
+  background: linear-gradient(90deg,
+      #D17C1F 0%,
+      #ffb842 54%,
+      #E6B14C 82%) !important;
   border: 0 solid transparent !important;
 }
 
-.extern_link{
+.extern_link {
   color: white;
   text-decoration: none;
-  margin-left: 100px;
+  margin-left: auto;
 }
 
-.iniciarsesion {
-  background: linear-gradient(
-    90deg,
-    #D17C1F 0%,
-    #ffb842 54%,
-    #E6B14C 82%
-  ) !important;
+.button_submit {
+  background: linear-gradient(90deg,
+      #D17C1F 0%,
+      #ffb842 54%,
+      #E6B14C 82%) !important;
 }
 
 h1 {
@@ -151,12 +146,10 @@ h1 {
 }
 
 .button-purchase {
-  background: linear-gradient(
-    90deg,
-    #D17C1F 0%,
-    #ffb842 54%,
-    #E6B14C 82%
-  );
+  background: linear-gradient(90deg,
+      #D17C1F 0%,
+      #ffb842 54%,
+      #E6B14C 82%);
   border: 5px ridge #021429;
   width: 100px;
   transition: all 0.2s;
@@ -170,7 +163,7 @@ h1 {
 }
 
 .button-purchase:active {
-  background-color: rgba(85, 144, 189, 0.8); 
+  background-color: rgba(85, 144, 189, 0.8);
   transform: translateY(4px);
   box-shadow: 0 0 2px #D17C1F;
 }
@@ -186,7 +179,7 @@ h1 {
 
 .product-info {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
 }
 
 .product-name {
@@ -212,7 +205,7 @@ h1 {
   cursor: pointer;
 }
 
-.product-in-cart + .product-in-cart {
+.product-in-cart+.product-in-cart {
   border-top: 1px solid #ccc;
   margin-top: 10px;
 }
@@ -225,7 +218,7 @@ h1 {
 
 #next {
   position: sticky;
-  margin-left: 1060px;
+  margin-left: 1390px;
 }
 
 
@@ -240,7 +233,7 @@ h1 {
   padding: 10px;
 }
 
-.img-container-list{
+.img-container-list {
   margin-right: 10px;
   text-align: center;
 }
@@ -275,7 +268,8 @@ p.font-weight-bold {
   font-size: 15px;
 }
 
-.active, .collapsible:hover {
+.active,
+.collapsible:hover {
   background-color: #ccc;
 }
 
@@ -298,3 +292,58 @@ p.font-weight-bold {
   font-size: 16px;
 }
 
+#views_container {
+  display: flex; /* Usamos flexbox */
+  flex-direction: row; /* Queremos que estén en una fila horizontal */
+}
+
+
+#productListContainer {
+  display: inline;
+}
+
+
+#register_products_form {
+  margin: 20px;
+  border-radius: 50px;
+  padding: 30px;
+  background-color: #021429;
+  color: white;
+}
+
+.titles {
+  text-align: center;
+  margin-top: 20px;
+}
+
+#success {
+  display: none;
+  position: absolute;
+  top: 110px;
+  margin: 0 auto;
+}
+
+.number-box {
+  border: 1px solid black;
+  width: 70px;
+  height: 30px;
+  text-align: center;
+  margin: 0 10px;
+}
+
+.quantity-box {
+  display: flex;
+}
+
+.plus, .minus {
+  border: 0 solid transparent;
+  background-color: transparent;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type=number] {-moz-appearance:textfield; }

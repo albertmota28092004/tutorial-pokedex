@@ -2,13 +2,16 @@
 var usernames = [];
 var passwords = [];
 var emails = [];
+var username = document.getElementById('username').value;
+var email = document.getElementById('email').value;
+var password = document.getElementById('password').value;
+var usernameLogin = document.getElementById('username_login').value;
+var passwordLogin = document.getElementById('password_login').value;
+
 
 function registerUser(){
     event.preventDefault();
-    let username = document.getElementById('username').value;
-    let email = document.getElementById('email').value;
-    let password = document.getElementById('pwd').value;
-
+    
     usernames.push(username);
     passwords.push(password);
     emails.push(email);
@@ -18,7 +21,20 @@ function registerUser(){
     window.open("indexAdmin.html")
 }
 
-function validateUser() {
+function validateUser() { 
+  let usernameLogin = document.getElementById('username_login').value;
+  let passwordLogin = document.getElementById('password_login').value;
+  event.preventDefault();
+  if (usernameLogin == "admin") {
+    if (passwordLogin == "admin12345" ) {
+      window.open("indexAdmin.html")
+    }
+    else {
+      mostrarAlerta("Incorrect password")
+    }
+  } else {
+    mostrarAlerta("User doesn't exist")
+  }
 
 }
 

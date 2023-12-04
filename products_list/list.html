@@ -13,10 +13,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <title>Fake Store - Products List</title>
 </head>
 
-<body>
+<body onload="fetchProductsList(),loadEliminatedProducts()">
     <header>
         <nav class="navbar navbar-expand-sm sticky-top barranav">
             <div class="container-fluid">
@@ -40,11 +41,59 @@
         </nav>
     </header>
 
-    <div id="productListContainer">
+    <div id="views_container">
+        <div id="register_products" class="col-lg-3">
+            <h3 class="titles">Register product</h3>
+            <form action="https://fakestoreapi.com/products" method="post" id="register_products_form">
+                <div class="mb-3 mt-3">
+                    <label for="id" class="form-label">ID: </label>
+                    <input type="text" class="form-control" placeholder="Enter ID" name="id" id="id">
+                </div>
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title:</label>
+                    <input type="text" class="form-control" placeholder="Enter title" name="title" id="title">
+                </div>
+                <div class="mb-3 mt-3">
+                    <label for="price" class="form-label">Price:</label>
+                    <input type="number" class="form-control" placeholder="Enter price" name="price" id="price">
+                </div>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description:</label>
+                    <input type="text" class="form-control" placeholder="Enter description" name="description"
+                        id="description">
+                </div>
+                <div class="mb-3 mt-3">
+                    <label for="category" class="form-label">Category:</label>
+                    <input type="text" class="form-control" placeholder="Enter category" name="category" id="category">
+                </div>
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image:</label>
+                    <input type="file" class="form-control" placeholder="Enter image" name="image" id="image">
+                </div>
+                <h3 for="username" class="form-label">Rating:</h3>
+                <div class="mb-3 mt-3">
+                    <label for="rate" class="form-label">Rate:</label>
+                    <input type="text" class="form-control" placeholder="Enter rate" name="rate" id="rate">
+                </div>
+                <div class="mb-3">
+                    <label for="count" class="form-label">Count:</label>
+                    <input type="text" class="form-control" placeholder="Enter count" name="count" id="count">
+                </div>
+                <button type="submit" class="btn button_submit" onclick="registerProduct()">Register product</button>
 
+            </form>
+        </div>
+
+        <div id="productListContainer" class="col-lg-9">
+
+        </div>
     </div>
     <div id="spinner" class="spinner-border text-light" role="status">
         <span class="visually-hidden">Loading...</span>
+    </div>
+
+    <div class="alert alert-success alert-dismissible" id="success">
+        <strong>Success!</strong> The product was created successfully!
     </div>
 
     <script src="list.js"></script>

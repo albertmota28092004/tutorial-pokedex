@@ -4,11 +4,13 @@ var previous = document.querySelector("#previous");
 var next = document.querySelector("#next");
 var offcanvas = new bootstrap.Offcanvas(document.getElementById("demo"));
 var productInOffcanvas = document.querySelector(".offcanvas-body .productCar");
-var productsInCart = [];
-var productListContainer = document.querySelector(".product-list-container");
+var productsInCart = []; 
 
 let limit = 8;
 let offset = 1;
+
+/*    */
+
 
 previous.addEventListener("click", () => {
   if (offset != 1) {
@@ -19,12 +21,17 @@ previous.addEventListener("click", () => {
 });
 
 next.addEventListener("click", () => {
-  if (offset < 19) {
-    offset += 9;
+  offset += limit; // Incrementa el valor de offset
+
+  if (offset <= 20) { // Limita el valor de offset para evitar solicitudes innecesarias
     removeChildNodes(productContainer);
     fetchProducts(offset, limit);
+  } else {
+    // Aquí puedes manejar el caso en que no hay más páginas disponibles.
+    // Por ejemplo, puedes deshabilitar el botón "next" o mostrar un mensaje al usuario.
   }
 });
+
 
 function fetchProduct(id) {
   fetch(`https://fakestoreapi.com/products/${id}`)
@@ -59,8 +66,8 @@ function createProduct(product) {
 
   let image = document.createElement("img");
   image.src = product.image;
-  image.style.width = "200px";
-  image.style.height = "200px";
+  image.style.width = "100%";
+  image.style.height = "500px";
 
   imageContainer.appendChild(image);
 
@@ -77,7 +84,6 @@ function createProduct(product) {
 
   let cardBack = document.createElement("div");
   cardBack.classList.add("product-block-back");
-  cardBack.style.overflow = "scroll";
 
   let category = document.createElement("p");
   category.textContent = formatCamelCase(product.category);
@@ -102,15 +108,8 @@ function createProduct(product) {
   cardContainer.appendChild(card);
   cardContainer.appendChild(cardBack);
   productContainer.appendChild(flipCard);
+  
 }
-
-function removeChildNodes(parent) {
-  while (parent.firstChild) {
-    parent.removeChild(parent.firstChild);
-  }
-}
-
-fetchProducts(offset, limit);
 
 function formatCamelCase(text) {
   return text
@@ -119,19 +118,9 @@ function formatCamelCase(text) {
     .join(' ');
 }
 
+fetchProducts(offset, limit);
+
 function addProductToCart(product) {
-  
-  let idProduct = product.id;
-
-  // Verificar si el producto ya está en el carrito
-  let existingProduct = productsInCart.find(item => item.id === idProduct);
-
-  if (existingProduct) {
-    console.log(`El producto con ID ${idProduct} ya está en el carrito.`);
-    offcanvas.show();
-    return;
-  }
-
   let productInCart = document.createElement("div");
   productInCart.classList.add("product-in-cart");
 
@@ -147,39 +136,9 @@ function addProductToCart(product) {
   let price = document.createElement("p");
   price.textContent = `$ ${product.price}`;
 
-  let productsQuantity = document.createElement('div');
-  productsQuantity.classList.add("quantity-box");
-
-  let number = document.createElement('input');
-  number.type = "number";
-  number.value = 1;
-  number.setAttribute("readonly", "true");
-  number.classList.add("number-box");
-
-  let plus = document.createElement('button');
-  plus.textContent = '+';
-  plus.classList.add("plus");
-  plus.addEventListener('click', () => {
-    number.value++;
-  });
-
-  let minus = document.createElement('button');
-  minus.textContent = '-';
-  minus.classList.add("minus");
-  minus.addEventListener('click', () => {
-    if (number.value > 1) {
-      number.value--;
-    }
-  });
-
-  productsQuantity.appendChild(minus);
-  productsQuantity.appendChild(number);
-  productsQuantity.appendChild(plus);
-
   let productsInfo = document.createElement("div");
   productsInfo.appendChild(title);
   productsInfo.appendChild(price);
-  productsInfo.appendChild(productsQuantity);
 
   let removeButton = document.createElement("button");
   removeButton.classList.add("remove-button");
@@ -194,17 +153,18 @@ function addProductToCart(product) {
   productInOffcanvas.appendChild(productInCart);
   offcanvas.show();
 
-  // Añadir el nuevo producto al carrito
   productsInCart.push(product);
-  localStorage.setItem('productsInCart', JSON.stringify(productsInCart));
-
-  updateBuyNowButton()
-  
+  updateBuyNowButton();
 }
 
 function updateBuyNowButton() {
-  buttonBuyNow = document.getElementById('buy-now');
-  buttonBuyNow.removeAttribute("hidden");
+  let buyNowButton = document.getElementById("buy-now-button");
+
+  if (productsInCart.length > 0) {
+    buyNowButton.style.display = "block";
+  } else  {
+    buyNowButton.style.display = "none"; 
+  }
 }
 
 function removeProductFromCart(productInCart) {
@@ -212,6 +172,4 @@ function removeProductFromCart(productInCart) {
 }
 
 
-
-
-
+updateBuyNowButton();
